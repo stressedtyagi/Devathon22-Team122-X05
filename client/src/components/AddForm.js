@@ -11,6 +11,10 @@ import {
   DialogTitle,
   DialogContentText,
   Paper,
+  Stack,
+  FormControlLabel,
+  Typography,
+  Switch,
 } from "@mui/material";
 import Draggable from "react-draggable";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -59,6 +63,9 @@ const styles = {
 const AddForm = ({ state, addIssue }) => {
   const [concern, setConcern] = useState("");
   const [discription, setDiscription] = useState("");
+  const [floor, setFloor] = useState("");
+  const [hostelBlock, setHostelBlock] = useState("");
+  const [isPrivate, setIsPrivate] = useState(false);
 
   /**
    * @param {Backdrop} state that is passed as props from Dashboard component
@@ -79,6 +86,9 @@ const AddForm = ({ state, addIssue }) => {
   const clearState = () => {
     setConcern("");
     setDiscription("");
+    setFloor("");
+    setHostelBlock("");
+    setIsPrivate(false);
   };
 
   // Event handler for close button
@@ -151,6 +161,47 @@ const AddForm = ({ state, addIssue }) => {
               ))}
             </TextField>
           </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              required
+              id="floor"
+              name="floor"
+              label="Floor"
+              fullWidth
+              autoComplete="cc-text"
+              variant="standard"
+              value={floor}
+              onChange={(event) => setFloor(event.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              required
+              id="hostelBlock"
+              name="hostelBlock"
+              label="Hostel Block"
+              fullWidth
+              autoComplete="cc-text"
+              variant="standard"
+              value={hostelBlock}
+              onChange={(event) => setHostelBlock(event.target.value)}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <FormControlLabel
+              control={
+                <Switch
+                  id="isPrivate"
+                  name="isPrivate"
+                  value={isPrivate}
+                  onChange={(event) => setIsPrivate(() => event.target.checked)}
+                />
+              }
+              label="Private"
+            />
+          </Grid>
+
           <Grid item xs={12} md={6}>
             <TextField
               disabled

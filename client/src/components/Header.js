@@ -54,7 +54,7 @@ function Header({ context }) {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [user, login, logout] = context;
   const navigate = useNavigate();
-  console.log(user);
+
   // event handler for user icon
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);

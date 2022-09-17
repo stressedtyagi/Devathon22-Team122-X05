@@ -24,7 +24,7 @@ import { concernAuthorities } from "../helpers/concernAuthorities";
  * @props {issue, state} - issue State has issue to edit and state contains data component from parent
  * @returns EditForm when we click edit btn
  */
-const EditForm = ({ issue, state, type }) => {
+const EditForm = ({ issue, state, type, user }) => {
   const [editIssue, setEditIssue] = issue;
   const [data, setData] = state;
   const [currStatus, setCurrStatus] = useState(editIssue.status);
@@ -57,11 +57,13 @@ const EditForm = ({ issue, state, type }) => {
      * */
     if (Object.keys(updates).length !== 0) {
       try {
+        console.log(updates);
         const {
           data: { issue: updatedIssue },
         } = await auth.patch(`/api/v1/issues/${editIssue._id}`, {
           data: {
             ...updates,
+            resolvedBy: user.userId,
           },
           token: browserActions.getLocalStorage("token"),
         });
@@ -74,7 +76,9 @@ const EditForm = ({ issue, state, type }) => {
           variant: "info",
           autoHideDuration: "1000",
         });
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
