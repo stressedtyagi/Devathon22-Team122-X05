@@ -45,7 +45,7 @@ const createIssue = async (req, res) => {
   req.body.createdBy = req.user.userId;
   req.body.resolvedBy = null;
   const issue = await Issue.create(req.body);
-  console.log(issue);
+
   res.status(StatusCodes.CREATED).json({ issue });
 };
 

@@ -16,6 +16,7 @@ const authMiddleware = (req, res, next) => {
     // Attaching userId here, so that this can be used in all of the routes of job controller
     // to access the user details who created the job
     req.user = { userId, name };
+
     next();
   } catch (err) {
     throw new UnauthenticatedError("Unauthorized access");
