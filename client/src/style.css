@@ -1,0 +1,18 @@
+/* 404 page style */
+.title-404 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -350px);
+}
+
+.discription-404 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 250px);
+}
+
+.btn-404 {
+    position: absolute;
+}
