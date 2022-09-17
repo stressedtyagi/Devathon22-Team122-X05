@@ -99,8 +99,14 @@ const checkAuth = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  const userData = await User.findOne({ _id: req.body.userId });
+  res.status(StatusCodes.OK).json(userData);
+};
+
 module.exports = {
   register,
   login,
   checkAuth,
+  getUser,
 };

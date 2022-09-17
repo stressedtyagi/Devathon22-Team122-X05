@@ -139,10 +139,12 @@ function Dashboard() {
         discription: formData.get("discription"),
         concernTo: formData.get("concern"),
         status: formData.get("status") || "pending",
+        floor: formData.get("floor"),
+        hostelBlock: formData.get("hostelBlock"),
+        isPrivate: formData.get("isPrivate") || false,
       },
       token,
     };
-
     /**
      * @description send request to add new issue
      * @response {data : issue object} - contains the new issue data
@@ -261,6 +263,7 @@ function Dashboard() {
                     issue={[editIssue, setEditIssue]}
                     state={[data, setData]}
                     type={type}
+                    user={user}
                   />
                 ) : data.count === 0 ? (
                   <>
