@@ -39,9 +39,14 @@ const register = async (req, res) => {
   // Calling instance method defined in schema for User
   const token = user.createJWT();
 
-  res
-    .status(StatusCodes.CREATED)
-    .json({ user: { name: user.name, type: user.type }, token });
+  res.status(StatusCodes.CREATED).json({
+    user: {
+      name: user.name,
+      type: user.type,
+      designation: user?.designation,
+    },
+    token,
+  });
 };
 
 const login = async (req, res) => {
@@ -66,7 +71,14 @@ const login = async (req, res) => {
   const token = user.createJWT();
   res
     .status(StatusCodes.OK)
-    .json({ user: { name: user.name, type: user.type }, token });
+    .json({
+      user: {
+        name: user.name,
+        type: user.type,
+        designation: user?.designation,
+      },
+      token,
+    });
 };
 
 const checkAuth = async (req, res) => {

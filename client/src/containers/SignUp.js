@@ -15,6 +15,7 @@ import {
   Typography,
   Stack,
   Switch,
+  MenuItem,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -22,6 +23,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 // custom file import
 import auth from "../utils/auth";
 import browserActions from "../utils/browserActions";
+import { concernAuthorities } from "../helpers/concernAuthorities";
 
 /**
  * @param {error,setError} state - error state to manages error messages in the form
@@ -31,6 +33,7 @@ function SignUp() {
   const [token, user, login, logout] = useOutletContext();
   const [error, setError] = useState("");
   const [type, setType] = useState("student");
+  const [designation, setDesignation] = useState("");
 
   // handle signup form submit
   const handleSubmit = (event) => {
@@ -41,6 +44,7 @@ function SignUp() {
       name: `${formData.get("firstName")} ${formData.get("lastName")}`,
       email: formData.get("email"),
       password: formData.get("password"),
+      designation: formData?.get("designation"),
       type: type,
     };
 
@@ -54,10 +58,14 @@ function SignUp() {
           const accessToken = "Bearer " + token;
           browserActions.setLocalStorage("token", accessToken);
 
-          // ! [Temp] Setting up localStoreage Varible for type
+          // ! [Temp] Setting up localStoreage Varible for type and designation
           const type = response?.data?.user?.type;
           browserActions.removeLocalStorage("type");
           browserActions.setLocalStorage("type", type);
+
+          const designation = response?.data?.user?.designation;
+          browserActions.removeLocalStorage("designation");
+          browserActions.setLocalStorage("designation", designation);
 
           login(accessToken);
         }
@@ -160,6 +168,33 @@ function SignUp() {
                     autoComplete="new-password"
                   />
                 </Grid>
+                {type === "resolver" ? (
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      select
+                      id="designation"
+                      name="designation"
+                      label="Designation"
+                      helperText="Select your respective designation"
+                      fullWidth
+                      value={designation}
+                      onChange={(event) => setDesignation(event.target.value)}
+                      variant="standard"
+                    >
+                      {/* Maping over the all possible concern authorities i.e. coming from 
+                                concern authorities helper function */}
+                      {concernAuthorities.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Grid>
+                ) : (
+                  <></>
+                )}
+
                 <Grid item xs={12}>
                   <Stack direction="row" spacing={1} alignItems="center">
                     <Typography>Student</Typography>

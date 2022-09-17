@@ -29,6 +29,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide user type"],
   },
+  designation: {
+    type: String,
+    enum: ["carpenter", "electrician", "data-center"],
+    required: false,
+  },
 });
 
 // Setting up middleware for mongoose, rather writing code in controllers

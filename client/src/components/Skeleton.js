@@ -52,7 +52,11 @@ const Skeleton = () => {
         .post("/api/v1/auth", params)
         .then((res) => {
           const { userId, name } = res.data;
-          setUser({ userId, name });
+          setUser({
+            userId,
+            name,
+            designation: browserActions.getLocalStorage("designation"),
+          });
         })
         .catch((err) => {
           logout();

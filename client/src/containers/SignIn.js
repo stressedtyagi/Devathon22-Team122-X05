@@ -47,7 +47,6 @@ function SignIn() {
     const password = formData.get("password");
     const rememberMe = formData.get("rememberMe");
     const data = { email, password, type };
-    console.log(data);
 
     auth
       .post("/api/v1/auth/login", { data })
@@ -69,10 +68,14 @@ function SignIn() {
           const accessToken = "Bearer " + token;
           browserActions.setLocalStorage("token", accessToken);
 
-          // ! [Temp] Setting up localStoreage Varible for type
+          // ! [Temp] Setting up localStoreage Varible for type and designation
           const type = response?.data?.user?.type;
           browserActions.removeLocalStorage("type");
           browserActions.setLocalStorage("type", type);
+
+          const designation = response?.data?.user?.designation;
+          browserActions.removeLocalStorage("designation");
+          browserActions.setLocalStorage("designation", designation);
 
           login(accessToken);
         }

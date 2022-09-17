@@ -6,9 +6,10 @@ import "@fontsource/roboto-mono";
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: "100vh",
-    backgroundImage: `url(${
-      process.env.PUBLIC_URL + "/assets/home-2-blur.jpg"
-    })`,
+    backgroundColor: "black",
+    // backgroundImage: `url(${
+    //   process.env.PUBLIC_URL + "/assets/home-3-blur.jpg"
+    // })`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     fontSize: "150px",
