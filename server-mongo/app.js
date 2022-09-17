@@ -7,12 +7,6 @@ const app = express();
 const helmet = require("helmet");
 const cors = require("cors");
 const xss = require("xss-clean");
-const rateLimiter = require("express-rate-limit");
-
-// Swagger setup
-const swaggerUI = require("swagger-ui-express");
-const YAML = require("yamljs");
-const swaggerDocument = YAML.load("./swagger.yaml");
 
 // Middleware
 const authMiddleware = require("./middleware/authentication");
@@ -45,9 +39,6 @@ app.use(xss());
 app.get("/", (req, res) => {
   res.send("<h1> HostRes API </h1> <a href='/api-docs'>API Documentation</a>");
 });
-
-// Swagger docs
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // routes
 app.use("/api/v1/auth", authRouter);

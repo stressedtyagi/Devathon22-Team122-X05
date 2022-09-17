@@ -4,36 +4,6 @@ const { BadRequestError, UnauthenticatedError } = require("../errors");
 const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
-
-  /*  
-        moving this code to User.js in models 
-        so that we can use the middleware functionality of mongoose rather than
-        writing the code here
-
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-        const tempUser = { name, email, password: hashedPassword };
-
-        after doing this we don't need to send tempUser while creating the new user
-        we can simple do the thing that we are doing earlier i.e. sending the req.body
-        to mongoose create function
-    */
-
-  /* 
-        Instead of this we will be using mongoose validator
-        to get clean and meaningfull error messages
-
-        if (!name || !email || !password) {
-            throw new BadRequestError("Please provide name, email and password");
-        } 
-    */
-  /* 
-        bad practice, as we are storing password as it is in the database.  
-        ...req.body <- using spread operator here to spread the values of req.body and inserting new document in the mongoose database
-        
-        const user = await User.create({ ...req.body });
-    */
   const user = await User.create({ ...req.body });
 
   // Calling instance method defined in schema for User
