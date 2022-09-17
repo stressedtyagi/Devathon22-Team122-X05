@@ -7,9 +7,9 @@ The project contains two folders client and server. Using concept of public and 
 - You may show a resolver only the issues that concern them (resolver
   type)
 - View and update status of issue <pending, resolving, resolved>
+- View list of issues which can be sorted by <timestamp, upvotes, etc
+  and/or filtered by floor, block of hostel, etc>
 
 ### TODO
 
 - Commenting under each issue for specific issue related communication
-- View list of issues which can be sorted by <timestamp, upvotes, etc
-  and/or filtered by floor, block of hostel, etc>

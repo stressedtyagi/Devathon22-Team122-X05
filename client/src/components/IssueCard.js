@@ -65,8 +65,6 @@ export const IssueCard = ({
   const [resolved, setResolved] = useState(null);
   const [upVote, setUpVote] = useState(item.upvotes || 0);
 
-  console.log(item);
-
   // hook used to display snackbar notifications (mui)
   const { enqueueSnackbar } = useSnackbar();
 

@@ -9,7 +9,12 @@ import {
   SpeedDial,
   SpeedDialIcon,
   CssBaseline,
+  Menu,
+  MenuItem,
+  Button,
+  IconButton,
 } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 // other imports
 import { useEffect, useState } from "react";
@@ -27,6 +32,14 @@ import Notification from "../components/Notification";
 import browserActions from "../utils/browserActions";
 import auth from "../utils/auth";
 
+const options = [
+  { value: "createdAt", label: "Timestamp" },
+  { value: "upvotes", label: "Upvotes" },
+  { value: "floor", label: "Floor" },
+  { value: "hostelBlock", label: "Hostel Block" },
+];
+const ITEM_HEIGHT = 40;
+
 /**
  * @prop {error,SetError} state - manages the error state that trigers custom notification
  * @prop {loading,SetLoading} state - manages the loading state that trigers custom loader
@@ -43,12 +56,28 @@ function Dashboard() {
   const [editIssue, setEditIssue] = useState(null);
   const [backdrop, setBackdrop] = useState(false);
   const [token, user, login, logout] = useOutletContext();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
   const [type, _] = useState(
     () => browserActions.getLocalStorage("type") || null
   );
 
   // hook used to display snackbar notifications (mui)
   const { enqueueSnackbar } = useSnackbar();
+
+  const handleClose = (event) => {
+    const sortAttri = event.target.dataset.myValue;
+    console.log(sortAttri);
+    data.issues.sort((a, b) => a[sortAttri] - b[sortAttri]);
+    setAnchorEl(null);
+    setData(data);
+  };
 
   // custom notification - using snackbar hook
   const notification = (data) => {
@@ -172,18 +201,6 @@ function Dashboard() {
       });
   };
 
-  /**
-   * [BUG] : By the time Dashboard is rendered `user` state remains null
-   * after render state gets some value
-   * i.e by making call at /dashboard ..... / route is coming even when user is authenticated
-   *          -> [TEMP SOLUTION] : Added Progress Bar until the `token` state is not null
-   *                              i.e UseEffect is still making asyc call to authenticate `user`
-   */
-
-  /**
-   * @todo: refractor the files that handle all these issue requests calls to server
-   */
-
   return (
     <>
       {/* user state:
@@ -220,6 +237,40 @@ function Dashboard() {
             <Toolbar />
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
               <Grid container spacing={3}>
+                <IconButton
+                  aria-label="more"
+                  id="long-button"
+                  aria-haspopup="true"
+                  onClick={handleClick}
+                >
+                  <MoreVertIcon style={{ color: "white" }} />
+                </IconButton>
+                <Menu
+                  id="long-menu"
+                  MenuListProps={{
+                    "aria-labelledby": "long-button",
+                  }}
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  PaperProps={{
+                    style: {
+                      maxHeight: ITEM_HEIGHT * 4.5,
+                      width: "20ch",
+                    },
+                  }}
+                >
+                  {options.map((option) => (
+                    <MenuItem
+                      key={option.value}
+                      data-my-value={option.value}
+                      onClick={handleClose}
+                    >
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Menu>
+
                 <Backdrop open={backdrop} />
                 {type === "student" ? (
                   <SpeedDial
@@ -274,25 +325,28 @@ function Dashboard() {
                     />
                     <img
                       src="https://i.imgur.com/L5jHP8f.gif"
-                      // [FUN] src="https://i.imgur.com/QsKU1KI.gif"
+                      // [FUN]
+                      // src="https://i.imgur.com/QsKU1KI.gif"
                       alt="nothing to see here"
                       width="70%"
                     />
                   </>
                 ) : (
-                  data.issues.map((item) => (
-                    <Grid item xs={12} md={4} lg={3} key={item._id}>
-                      <Card variant="outlined" sx={{ boxShadow: 3 }}>
-                        <IssueCard
-                          item={item}
-                          type={type}
-                          data={[data, setData]}
-                          editIssueHandler={editIssueHandler}
-                          deleteIssueHandler={deleteIssueHandler}
-                        />
-                      </Card>
-                    </Grid>
-                  ))
+                  <>
+                    {data.issues.map((item) => (
+                      <Grid item xs={12} md={4} lg={3} key={item._id}>
+                        <Card variant="outlined" sx={{ boxShadow: 3 }}>
+                          <IssueCard
+                            item={item}
+                            type={type}
+                            data={[data, setData]}
+                            editIssueHandler={editIssueHandler}
+                            deleteIssueHandler={deleteIssueHandler}
+                          />
+                        </Card>
+                      </Grid>
+                    ))}
+                  </>
                 )}
                 {/* Completely seperate from other login, managing snackbar showing in bottom */}
                 {error ? (
