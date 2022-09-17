@@ -10,7 +10,9 @@ const getAllIssues = async (req, res) => {
       "createdAt"
     );
   } else {
-    issues = await Issue.find({ createdBy: req.user.userId }).sort("createdAt");
+    issues = await Issue.find({
+      $or: [{ createdBy: req.user.userId }, { isPrivate: false }],
+    }).sort("createdAt");
   }
   res.status(StatusCodes.OK).json({ issues, count: issues.length });
 };
@@ -55,6 +57,8 @@ const updateIssue = async (req, res) => {
     user: { userId },
     params: { id: issueId },
   } = req;
+
+  console.log(req.body);
 
   if (discription === " " || concernTo === " ") {
     throw new BadRequestError("Company or Concern fields cannot be empty");

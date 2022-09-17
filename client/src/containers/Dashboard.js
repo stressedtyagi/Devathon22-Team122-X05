@@ -145,6 +145,7 @@ function Dashboard() {
       },
       token,
     };
+
     /**
      * @description send request to add new issue
      * @response {data : issue object} - contains the new issue data
@@ -285,6 +286,7 @@ function Dashboard() {
                         <IssueCard
                           item={item}
                           type={type}
+                          data={[data, setData]}
                           editIssueHandler={editIssueHandler}
                           deleteIssueHandler={deleteIssueHandler}
                         />

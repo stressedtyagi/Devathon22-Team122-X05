@@ -31,7 +31,6 @@ const UserSchema = new mongoose.Schema({
   },
   designation: {
     type: String,
-    enum: ["carpenter", "electrician", "data-center"],
     required: false,
   },
 });

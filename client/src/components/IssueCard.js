@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // mui imports
 import {
@@ -13,10 +13,12 @@ import {
   Badge,
 } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import auth from "../utils/auth";
-import { fontWeight } from "@mui/system";
 
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+
+import auth from "../utils/auth";
+import browserActions from "../utils/browserActions";
+import { useSnackbar } from "notistack";
 
 // differnt colors for different job status
 const colorMap = {
@@ -61,11 +63,36 @@ export const IssueCard = ({
   deleteIssueHandler,
 }) => {
   const [resolved, setResolved] = useState(null);
-  useState(() => {
+  const [upVote, setUpVote] = useState(item.upvotes || 0);
+
+  // hook used to display snackbar notifications (mui)
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
     if (item.resolvedBy) {
       getUser(item.resolvedBy, setResolved);
     }
   });
+
+  const handleUpVote = async () => {
+    const {
+      data: { issue: updatedIssue },
+    } = await auth.patch(`/api/v1/issues/${item._id}`, {
+      data: {
+        upvotes: upVote + 1,
+      },
+      token: browserActions.getLocalStorage("token"),
+    });
+
+    setUpVote(updatedIssue.upvotes);
+
+    // on successful update show snackbar
+    enqueueSnackbar("Issue updated successfully", {
+      variant: "info",
+      autoHideDuration: "1000",
+    });
+  };
+
   return (
     <Grow
       in={true}
@@ -135,24 +162,37 @@ export const IssueCard = ({
             }}
           />
         </CardActions>
-        <Badge
-          color="secondary"
-          badgeContent={3}
-          sx={{ alignSelf: "left", textAlign: "left" }}
-        >
-          <ArrowUpwardIcon />
-        </Badge>
+
         {item.status === "resolved" && resolved ? (
           <Typography
             variant="h6"
             sx={styles.date}
             color="text.secondary"
             paddingRight={1}
+            paddingTop={1}
           >
             Resolved By : {resolved}
           </Typography>
-        ) : (
+        ) : item.isPrivate ? (
           <></>
+        ) : (
+          <div
+            style={{
+              ...styles.date,
+              paddingRight: "20px",
+              paddingTop: "15px",
+              paddingBottom: "0px",
+            }}
+          >
+            {item.name}
+            <Badge color="secondary" badgeContent={upVote || 0}>
+              <Tooltip title="Up Vote" placement="bottom-start">
+                <IconButton color="primary" onClick={handleUpVote}>
+                  <ArrowUpwardIcon />
+                </IconButton>
+              </Tooltip>
+            </Badge>
+          </div>
         )}
       </CardContent>
     </Grow>
@@ -163,7 +203,6 @@ const getUser = async (id, setResolved) => {
   const name = await auth
     .post("/api/v1/auth/getUser", { data: { userId: id } })
     .then((res) => {
-      console.log(res);
       const { name } = res.data;
       setResolved(name);
     })

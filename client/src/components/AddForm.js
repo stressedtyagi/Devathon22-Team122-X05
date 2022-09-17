@@ -11,9 +11,7 @@ import {
   DialogTitle,
   DialogContentText,
   Paper,
-  Stack,
   FormControlLabel,
-  Typography,
   Switch,
 } from "@mui/material";
 import Draggable from "react-draggable";
@@ -24,7 +22,6 @@ import { useEffect, useState } from "react";
 
 // helpers and utils import
 import { concernAuthorities } from "../helpers/concernAuthorities";
-import { status } from "../helpers/issueStatus";
 
 /**
  * @info Component used for making dialog draggable
@@ -187,7 +184,6 @@ const AddForm = ({ state, addIssue }) => {
               onChange={(event) => setHostelBlock(event.target.value)}
             />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <FormControlLabel
               control={
@@ -201,7 +197,6 @@ const AddForm = ({ state, addIssue }) => {
               label="Private"
             />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <TextField
               disabled
