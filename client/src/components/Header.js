@@ -11,14 +11,15 @@ import {
   MenuItem,
   Tooltip,
   Chip,
-  Switch,
-  Stack,
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 // react/other imports
 import { useState } from "react";
 import { useNavigate } from "react-router";
+
+// Helper/utils Imports
+import { concernAuthorities } from "../helpers/concernAuthorities";
 
 // font imports
 import "@fontsource/roboto-mono";
@@ -111,7 +112,10 @@ function Header({ context }) {
                   fontFamily: "Roboto Mono",
                 }}
               >
-                HostRes | {user?.designation}
+                HostRes{" "}
+                {user?.designation !== undefined
+                  ? `| ${findDesignation(user?.designation)}`
+                  : ""}
               </Typography>
             </Box>
 
@@ -188,5 +192,8 @@ function Header({ context }) {
     </Box>
   );
 }
+
+const findDesignation = (designation) =>
+  concernAuthorities.filter((item) => item.value === designation)[0].label;
 
 export default Header;

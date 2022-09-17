@@ -62,7 +62,16 @@ function Dashboard() {
   useEffect(function fetchInitialData() {
     if (!data) {
       let params = { token: token };
-      params = type === "resolver" ? { ...params, data: { type } } : params;
+      params =
+        type === "resolver"
+          ? {
+              ...params,
+              data: {
+                type,
+                designation: browserActions.getLocalStorage("designation"),
+              },
+            }
+          : params;
 
       auth
         .get("/api/v1/issues", params)

@@ -69,16 +69,14 @@ const login = async (req, res) => {
   }
 
   const token = user.createJWT();
-  res
-    .status(StatusCodes.OK)
-    .json({
-      user: {
-        name: user.name,
-        type: user.type,
-        designation: user?.designation,
-      },
-      token,
-    });
+  res.status(StatusCodes.OK).json({
+    user: {
+      name: user.name,
+      type: user.type,
+      designation: user?.designation,
+    },
+    token,
+  });
 };
 
 const checkAuth = async (req, res) => {

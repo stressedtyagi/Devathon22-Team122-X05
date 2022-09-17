@@ -52,11 +52,18 @@ const Skeleton = () => {
         .post("/api/v1/auth", params)
         .then((res) => {
           const { userId, name } = res.data;
-          setUser({
+          let user = {
             userId,
             name,
-            designation: browserActions.getLocalStorage("designation"),
-          });
+          };
+          user =
+            browserActions.getLocalStorage("type") === "resolver"
+              ? {
+                  ...user,
+                  designation: browserActions.getLocalStorage("designation"),
+                }
+              : user;
+          setUser(user);
         })
         .catch((err) => {
           logout();
@@ -77,6 +84,7 @@ const Skeleton = () => {
   const logout = () => {
     browserActions.removeLocalStorage("token");
     browserActions.removeLocalStorage("type");
+    browserActions.removeLocalStorage("designation");
     setToken(null);
     setUser(null);
   };

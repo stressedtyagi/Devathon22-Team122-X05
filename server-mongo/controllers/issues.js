@@ -6,7 +6,9 @@ const getAllIssues = async (req, res) => {
   const type = req?.query?.type;
   let issues;
   if (type) {
-    issues = await Issue.find().sort("createdAt");
+    issues = await Issue.find({ concernTo: req?.query?.designation }).sort(
+      "createdAt"
+    );
   } else {
     issues = await Issue.find({ createdBy: req.user.userId }).sort("createdAt");
   }
