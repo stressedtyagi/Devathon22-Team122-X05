@@ -65,6 +65,8 @@ export const IssueCard = ({
   const [resolved, setResolved] = useState(null);
   const [upVote, setUpVote] = useState(item.upvotes || 0);
 
+  console.log(item);
+
   // hook used to display snackbar notifications (mui)
   const { enqueueSnackbar } = useSnackbar();
 
@@ -184,7 +186,6 @@ export const IssueCard = ({
               paddingBottom: "0px",
             }}
           >
-            {item.name}
             <Badge color="secondary" badgeContent={upVote || 0}>
               <Tooltip title="Up Vote" placement="bottom-start">
                 <IconButton color="primary" onClick={handleUpVote}>
@@ -199,12 +200,12 @@ export const IssueCard = ({
   );
 };
 
-const getUser = async (id, setResolved) => {
+const getUser = async (id, userUpdate) => {
   const name = await auth
     .post("/api/v1/auth/getUser", { data: { userId: id } })
     .then((res) => {
       const { name } = res.data;
-      setResolved(name);
+      userUpdate(name);
     })
     .catch((err) => {
       console.log(err);

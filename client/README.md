@@ -28,4 +28,4 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 - [notistack](https://www.npmjs.com/package/notistack)
 - [typewriter-effect](https://www.npmjs.com/package/typewriter-effect)
 
-### `proxy : https://jobify-server-dt.herokuapp.com/`
+### `proxy : http://localhost:3001/`

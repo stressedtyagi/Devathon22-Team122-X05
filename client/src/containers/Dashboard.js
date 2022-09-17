@@ -54,7 +54,7 @@ function Dashboard() {
   const notification = (data) => {
     enqueueSnackbar(data.msg, {
       variant: data.variant,
-      autoHideDuration: "1000",
+      autoHideDuration: "100",
     });
   };
 
