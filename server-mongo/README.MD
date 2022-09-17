@@ -11,6 +11,10 @@ npm install && npm start
 3. Setup .env in the root
 4. Add MONGO_URI with correct value
 
+### (API-DOCS)
+
+Read and test the API using [this link](https://server-mongo-dt.herokuapp.com/)
+
 ### Routers
 
 - #### auth.js
